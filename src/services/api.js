@@ -18,18 +18,15 @@ const DEFAULT_DATA = {
     { id: 'ENR-2', studentId: 'STU-002', courseId: 'SE-305', term: 'Fall 2026', grade: 'B+', points: 3.5 },
   ],
 };
-
 function getLocalCollection(resource) {
   const stored = localStorage.getItem(`sis_${resource}`);
   if (stored) return JSON.parse(stored);
   localStorage.setItem(`sis_${resource}`, JSON.stringify(DEFAULT_DATA[resource] || []));
   return DEFAULT_DATA[resource] || [];
 }
-
 function setLocalCollection(resource, items) {
   localStorage.setItem(`sis_${resource}`, JSON.stringify(items));
 }
-
 export const api = {
   async getAll(resource) {
     try {
@@ -42,7 +39,6 @@ export const api = {
       return getLocalCollection(resource);
     }
   },
-
   async create(resource, payload) {
     const newItem = {
       id: payload.id || `${resource.slice(0, 3).toUpperCase()}-${Date.now()}`,
@@ -65,7 +61,6 @@ export const api = {
       return newItem;
     }
   },
-
   async update(resource, id, updates) {
     try {
       const res = await fetch(`${API_URL}/${resource}/${id}`, {
