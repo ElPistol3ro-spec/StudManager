@@ -2,7 +2,6 @@ import { createContext, useContext, useState } from 'react';
 import { api } from '../services/api';
 
 const AuthContext = createContext(null);
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('sis_active_user');
@@ -30,7 +29,6 @@ export function AuthProvider({ children }) {
     persistSession(safeUser);
     return safeUser;
   };
-
   const loginWithSocial = async (provider, profile = {}) => {
     const email = profile.email || `${provider.toLowerCase()}.user@inst.edu`;
     const name = profile.name || `${provider} Scholar`;
@@ -53,13 +51,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = () => persistSession(null);
-
   return (
     <AuthContext.Provider value={{ user, loginWithEmail, loginWithSocial, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
 export const useAuth = () => useContext(AuthContext);
 
