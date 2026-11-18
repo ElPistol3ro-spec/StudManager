@@ -1,0 +1,18 @@
+  {
+  "users": [
+    { "id": "1", "name": "Dr. Jane Mwangi", "email": "admin@inst.edu", "password": "password123", "role": "admin", "provider": "email" },
+    { "id": "2", "name": "Brian Ochieng", "email": "brian@inst.edu", "password": "password123", "role": "student", "provider": "email" }
+  ],
+  "students": [
+    { "id": "STU-001", "fullName": "Brian Ochieng", "email": "brian@inst.edu", "program": "BSc Computer Science", "year": 2, "status": "Active" },
+    { "id": "STU-002", "fullName": "Amina Hassan", "email": "amina@inst.edu", "program": "BSc Software Engineering", "year": 3, "status": "Active" }
+  ],
+  "courses": [
+    { "id": "CS-201", "code": "CS-201", "title": "Data Structures & Algorithms", "credits": 4, "instructor": "Dr. K. Kamau", "capacity": 40 },
+    { "id": "SE-305", "code": "SE-305", "title": "Web Application Engineering", "credits": 3, "instructor": "Prof. L. Wanjiku", "capacity": 35 }
+  ],
+  "enrollments": [
+    { "id": "ENR-1", "studentId": "STU-001", "courseId": "CS-201", "term": "Fall 2026", "grade": "A", "points": 4.0 },
+    { "id": "ENR-2", "studentId": "STU-002", "courseId": "SE-305", "term": "Fall 2026", "grade": "B+", "points": 3.5 }
+  ]
+}
