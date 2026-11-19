@@ -49,7 +49,6 @@ export function AuthProvider({ children }) {
     persistSession(safeUser);
     return safeUser;
   };
-
   const logout = () => persistSession(null);
   return (
     <AuthContext.Provider value={{ user, loginWithEmail, loginWithSocial, logout }}>
