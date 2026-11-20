@@ -1,18 +1,135 @@
-  {
+{
   "users": [
-    { "id": "1", "name": "Dr. Jane Mwangi", "email": "admin@inst.edu", "password": "password123", "role": "admin", "provider": "email" },
-    { "id": "2", "name": "Brian Ochieng", "email": "brian@inst.edu", "password": "password123", "role": "student", "provider": "email" }
+    {
+      "id": "1",
+      "name": "Dr. Jane Mwangi",
+      "email": "admin@inst.edu",
+      "password": "password123",
+      "role": "admin",
+      "provider": "email"
+    },
+    {
+      "id": "2",
+      "name": "Brian Ochieng",
+      "email": "brian@inst.edu",
+      "password": "password123",
+      "role": "student",
+      "provider": "email"
+    },
+    {
+      "id": "xkqDiNGoPbQ",
+      "name": "Google Student",
+      "email": "google.student@inst.edu",
+      "role": "student",
+      "provider": "google"
+    },
+    {
+      "id": "qj2qIRZ5Cms",
+      "name": "GitHub Developer",
+      "email": "github.dev@inst.edu",
+      "role": "student",
+      "provider": "github"
+    },
+    {
+      "name": "GitHub Scholar",
+      "email": "elvis.kimani4@student.moringaschool.com",
+      "role": "student",
+      "provider": "github",
+      "id": "FYoncBNypes"
+    }
   ],
+
+
   "students": [
-    { "id": "STU-001", "fullName": "Brian Ochieng", "email": "brian@inst.edu", "program": "BSc Computer Science", "year": 2, "status": "Active" },
-    { "id": "STU-002", "fullName": "Amina Hassan", "email": "amina@inst.edu", "program": "BSc Software Engineering", "year": 3, "status": "Active" }
+    {
+      "id": "STU-001",
+      "regId": "STU-001",
+      "fullName": "Brian Ochieng",
+      "email": "brian@inst.edu",
+      "program": "BSc Computer Science",
+      "year": 2,
+      "status": "Active"
+    },
+
+    
+    {
+      "id": "STU-002",
+      "regId": "STU-002",
+      "fullName": "Carl Johnson",
+      "email": "carl@inst.edu",
+      "program": "BSc Computer Science",
+      "year": 1,
+      "status": "Active"
+    },
+    {
+      "id": "STU-003",
+      "regId": "STU-003",
+      "fullName": "Peter Mboya",
+      "email": "peter@inst.edu",
+      "program": "BSc Computer Science",
+      "year": 1,
+      "status": "Active"
+    }
   ],
   "courses": [
-    { "id": "CS-201", "code": "CS-201", "title": "Data Structures & Algorithms", "credits": 4, "instructor": "Dr. K. Kamau", "capacity": 40 },
-    { "id": "SE-305", "code": "SE-305", "title": "Web Application Engineering", "credits": 3, "instructor": "Prof. L. Wanjiku", "capacity": 35 }
+    {
+      "id": "CS-201",
+      "code": "CS-201",
+      "title": "Data Structures & Algorithms",
+      "credits": 4,
+      "instructor": "Dr. K. Kamau",
+      "capacity": 40
+    },
+    {
+      "id": "SE-305",
+      "code": "SE-305",
+      "title": "Web Application Engineering",
+      "credits": 3,
+      "instructor": "Prof. L. Wanjiku",
+      "capacity": 35
+    },
+    {
+      "id": "oxjw3TAV61o",
+      "code": "SF-401",
+      "title": "Software engineering",
+      "credits": 3,
+      "instructor": "Peter Muturi",
+      "capacity": 40
+    },
+    {
+      "id": "NL0G0se-9Z0",
+      "code": "DS-401",
+      "title": "Data Science",
+      "credits": 5,
+      "instructor": "Prof. M. Jordan",
+      "capacity": 40
+    }
   ],
   "enrollments": [
-    { "id": "ENR-1", "studentId": "STU-001", "courseId": "CS-201", "term": "Fall 2026", "grade": "A", "points": 4.0 },
-    { "id": "ENR-2", "studentId": "STU-002", "courseId": "SE-305", "term": "Fall 2026", "grade": "B+", "points": 3.5 }
-  ]
+    {
+      "id": "ENR-1",
+      "studentId": "STU-001",
+      "courseId": "CS-201",
+      "term": "Fall 2026",
+      "grade": "A",
+      "points": 4
+    },
+    {
+      "studentId": "STU-002",
+      "courseId": "CS-201",
+      "term": "Fall 2026",
+      "grade": "B+",
+      "points": 3.5,
+      "id": "GyjTJP_Cx_g"
+    },
+    {
+      "studentId": "STU-003",
+      "courseId": "oxjw3TAV61o",
+      "term": "Fall 2026",
+      "grade": "C+",
+      "points": 2.5,
+      "id": "74yPp0JZrR4"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
