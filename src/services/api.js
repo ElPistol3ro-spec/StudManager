@@ -41,8 +41,9 @@ export const api = {
   },
   async create(resource, payload) {
     const newItem = {
-      id: payload.id || `${resource.slice(0, 3).toUpperCase()}-${Date.now()}`,
-      ...payload,
+        ...payload,
+      id: payload.id ? String(payload.id) : `${resource.slice(0, 3).toUpperCase()}-${Date.now()}`,
+      
     };
     try {
       const res = await fetch(`${API_URL}/${resource}`, {
@@ -81,7 +82,6 @@ export const api = {
       return current.find((item) => item.id === id);
     }
   },
-
   async remove(resource, id) {
     try {
       await fetch(`${API_URL}/${resource}/${id}`, { method: 'DELETE' });
