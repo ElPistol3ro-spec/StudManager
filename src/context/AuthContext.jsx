@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import { api } from '../services/api';
+import { signInWithGitHubPopup } from '../services/firebase';
 
 const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
@@ -7,7 +8,6 @@ export function AuthProvider({ children }) {
     const saved = localStorage.getItem('sis_active_user');
     return saved ? JSON.parse(saved) : null;
   });
-
   const persistSession = (userData) => {
     setUser(userData);
     if (userData) {
@@ -16,7 +16,6 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('sis_active_user');
     }
   };
-
   const loginWithEmail = async (email, password) => {
     const users = await api.getAll('users');
     const found = users.find(
@@ -30,9 +29,17 @@ export function AuthProvider({ children }) {
     return safeUser;
   };
   const loginWithSocial = async (provider, profile = {}) => {
-    const email = profile.email || `${provider.toLowerCase()}.user@inst.edu`;
-    const name = profile.name || `${provider} Scholar`;
+    let socialProfile = profile
 
+    if (provider.toLowerCase() === 'github') {
+        const ghUser = await signInWithGitHubPopup()
+        socialProfile = {
+            name: ghUser.displayName || 'GitHub Scholar',
+            email: ghUser.email,
+        }
+    }
+    const email = socialProfile.email || `${provider.toLowerCase()}.user@inst.edu`;
+    const name = socialProfile.name || `${provider} Scholar`;
     const users = await api.getAll('users');
     let existing = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 
