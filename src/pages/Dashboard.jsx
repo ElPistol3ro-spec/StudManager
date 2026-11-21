@@ -111,7 +111,40 @@ export default function Dashboard() {
     });
     setEnrollments(enrollments.map((enr) => (enr.id === enrollmentId ? updated : enr)));
   };
+  const currentStudent = students.find(
+    (s) =>
+      s.email &&
+      user?.email &&
+      s.email.trim().toLowerCase() === user.email.trim().toLowerCase
+  ) ||
+  students.find(
+    (s) =>
+      s.fullName &&
+      user?.name &&
+      s.fullName.trim().toLowerCase() === user.name.trim().toLowerCase()
+  ) ||
+  students.find(
+    (s) =>
+      s.regId &&
+      user?.regId &&
+      String(s.regId) === String(user.regId)
+  )
+      
 
+
+  const visibleCourses = isAdmin
+    ? courses
+    : courses.filter((c) =>
+        enrollments.some(
+            (e) =>
+            (String(e.courseId) === String(c.id) || String(e.courseId) === String(c.code)) &&
+            ((currentStudent && String(e.studentId) === String(currentStudent.id)) ||
+              (currentStudent?.regId && String(e.studentId) === String(currentStudent.nextRegId)) ||
+              (user?.id && String(e.studentId) === String(user.id)) ||
+              (user?.regId && String(e.studentId) === String(user.regId)))
+)
+    )
+            
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between">
@@ -203,7 +236,7 @@ export default function Dashboard() {
             </form>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {courses.map((c) => (
+              {visibleCourses.map((c) => (
                 <div key={c.id} className="bg-white p-5 rounded-xl border border-slate-200 flex justify-between items-start">
                   <div>
                     <span className="text-xs font-mono bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded">{c.code}</span>
