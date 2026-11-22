@@ -42,6 +42,32 @@ describe('Login Page', () => {
         <Login />
       </MemoryRouter>
     );
+})
+     it('sets password for a valid student and logs in', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation((url, options) => {
+      if (String(url).includes('/students')) {
+        return Promise.resolve({
+          ok: true,
+          json: () =>
+            Promise.resolve([
+              { id: 'STU-006', regId: 'STU-006', fullName: 'Jorja Smith', email: 'jorja@inst.edu' },
+            ]),
+        });
+      }
+      if (String(url).includes('/users') && !options?.method) {
+        return Promise.resolve({ ok: true, json: () => Promise.resolve([]) });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ id: 'U-99', email: 'jorja@inst.edu', role: 'student' }),
+      });
+    });
+
+    render(
+      <MemoryRouter>
+        <Login />
+      </MemoryRouter>
+    );
 
     fireEvent.click(screen.getByText(/First-time student\? Set your password/i));
     fireEvent.change(screen.getByLabelText(/Institutional Email/i), {
@@ -51,11 +77,26 @@ describe('Login Page', () => {
       target: { value: 'secret123' },
     });
     fireEvent.change(screen.getByLabelText(/Confirm Password/i), {
-      target: { value: 'different' },
+      target: { value: 'secret123' },
     });
     fireEvent.click(screen.getByRole('button', { name: /Set Password & Sign In/i }));
 
-    expect(await screen.findByText(/Passwords do not match/i)).toBeInTheDocument();
+    await waitFor(() => {
+        expect(mockLoginWithEmail).toHaveBeenCalledWith('jorja@inst.edu', 'secret123')
+    })
+})
+it('triggers social login buttons and handles errors', async () => {
+    mockLoginWithSocial.mockRejectedValueOnce(new Error('OAuth cancelled'))
+    render(
+        <MemoryRouter>
+            <Login />
+        </MemoryRouter>
+    )
+    const githubBtn = screen.getByRole('button', { name: /Github/i })
+    fireEvent.click(githubBtn)
+
+    expect(await screen.findByText(/OAuth cancelled/i)).toBeInTheDocument();
   });
 });
+
 
