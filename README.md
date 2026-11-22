@@ -1,16 +1,76 @@
-# React + Vite
+# StudManager
+**StudManager**
+- A role-based Student & Academic Records Managemnt System 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
+## Features
+### Authentication $ Role-Based Access
+* **Institutional Email Sign-In:** Role-based login (`admin` and `student`)
+* **First-Time Student Password Setup:** New students registered by the administrator can set their own unique passwords.
+* **Social OAuth Authentication:** Support Google and GitHub sign-in.
 
-Currently, two official plugins are available:
+### Administrator Dashboard
+* **Student Directory Management:** Register new students with auto-generated registration IDs, academic programs, and year levels.
+* **Course & Enrollment Management:** View all acative courses, enroll students into courses and record grades.
+* **Academic Transcripts:** View and manage academic performance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Student Dashboard
+* **Assigned Courses View:** Displays only the courses logged-in student is enrollled in.
+* **Academic Transcripts:** Allows students to view their academic performance
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+* **Frontend:** React, Tailwind CSS, Lucide Icons, JavaScript
+* **Backend:** JSON Server, (`db-json`)
+* **Build & Deployment:** Vite, GitHub Pages (`gh-pages`)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Installation & Setup
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/ElPistol3ro-spec/StudManager.git
+   cd StudManager
+   ```
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Start the JSON Server backend:**
+   ```bash
+   npx json-server --watch db.json --port 4000
+   ```
+4. **Start the Vite development server:**
+   ```bash
+   npm run dev
+   ```
+
+## Running Tests & Coverage
+
+```bash
+# Run all tests
+npx vitest run
+
+# Run tests with code coverage report
+npx vitest run --coverage
+```
+
+---
+
+## Deployment
+
+Deploy updates to GitHub Pages using:
+
+```bash
+npm run deploy
+```
+
+---
+
+## Live Demo Link
+
+View the live deployed appliaction:
+[https://elpistol3ro-spec.github.io/StudManager/]
+
+----
+
