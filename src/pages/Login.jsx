@@ -24,44 +24,35 @@ export default function Login() {
         if (password !== confirmPassword) {
           throw new Error('Passwords do not match.')
         }
-        const studentsRes = await fetch('http://localhost:4000/students')
-        const students = await studentsRes.json()
-        const matchedStudent = students.find(
-          (s) => s.email?.trim().toLowerCase() === email.trim().toLowerCase()
-        )
-        if (!matchedStudent) {
-          throw new Error('No student record found for this email')
-        }
 
-        const usersRes = await fetch('http://localhost:4000/users')
-        const users = await usersRes.json()
-        const existingUser = users.find(
-          (u) => u.email?.trim().toLowerCase() === email.trim().toLowerCase()
-        )
-        if (existingUser?.password) {
-          throw new Error('Account already exists. Please sign in.')
-        }
-        if (existingUser) {
-          await fetch(`http://localhost:4000/users/${existingUser.id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password }),
-          })
-        } else {
-          await fetch('http://localhost:4000/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: matchedStudent.email,
-              password,
-              name: matchedStudent.fullName,
-              role: 'student',
-              regId: matchedStudent.regId,
-            }),
-          })
-        }
-      }
-        
+       const students = await api.getAll('students');
+       const matchedStudent = students.find(
+       (s) => s.email?.trim().toLowerCase() === email.trim().toLowerCase()
+     );
+     if (!matchedStudent) {
+       throw new Error('No student record found for this email');
+     }
+
+     const users = await api.getAll('users');
+     const existingUser = users.find(
+       (u) => u.email?.trim().toLowerCase() === email.trim().toLowerCase()
+     );
+     if (existingUser?.password) {
+       throw new Error('Account already exists. Please sign in.');
+     }
+
+     if (existingUser) {
+       await api.update('users', existingUser.id, { ...existingUser, password });
+     } else {
+       await api.create('users', {
+         email: matchedStudent.email,
+         password,
+         name: matchedStudent.fullName,
+         role: 'student',
+         regId: matchedStudent.regId,
+       });
+     }
+    }
       await loginWithEmail(email, password);
       navigate('/dashboard');
     } catch (err) {
