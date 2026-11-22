@@ -12,7 +12,7 @@
 ### Administrator Dashboard
 * **Student Directory Management:** Register new students with auto-generated registration IDs, academic programs, and year levels.
 * **Course & Enrollment Management:** View all acative courses, enroll students into courses and record grades.
-* **Academic Transcripts:** View and manage academic performance.
+* **Academic Transcripts:** View grades and manage academic performance.
 
 ### Student Dashboard
 * **Assigned Courses View:** Displays only the courses logged-in student is enrollled in.
