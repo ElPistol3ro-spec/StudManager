@@ -2,10 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Mail, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSettingPassword, setIsSettingPassword] = useState(false)
   const [error, setError] = useState('');
   const { loginWithEmail, loginWithSocial } = useAuth();
   const navigate = useNavigate();
@@ -14,6 +17,51 @@ export default function Login() {
     e.preventDefault();
     setError('');
     try {
+      if (isSettingPassword) {
+        if (password.length < 6) {
+          throw new Error('Password must be at least 6 characters.')
+        }
+        if (password !== confirmPassword) {
+          throw new Error('Passwords do not match.')
+        }
+        const studentsRes = await fetch('http://localhost:4000/students')
+        const students = await studentsRes.json()
+        const matchedStudent = students.find(
+          (s) => s.email?.trim().toLowerCase() === email.trim().toLowerCase()
+        )
+        if (!matchedStudent) {
+          throw new Error('No student record found for this email')
+        }
+
+        const usersRes = await fetch('http://localhost:4000/users')
+        const users = await usersRes.json()
+        const existingUser = users.find(
+          (u) => u.email?.trim().toLowerCase() === email.trim().toLowerCase()
+        )
+        if (existingUser?.password) {
+          throw new Error('Account already exists. Please sign in.')
+        }
+        if (existingUser) {
+          await fetch(`http://localhost:4000/users/${existingUser.id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password }),
+          })
+        } else {
+          await fetch('http://localhost:4000/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: matchedStudent.email,
+              password,
+              name: matchedStudent.fullName,
+              role: 'student',
+              regId: matchedStudent.regId,
+            }),
+          })
+        }
+      }
+        
       await loginWithEmail(email, password);
       navigate('/dashboard');
     } catch (err) {
@@ -29,8 +77,9 @@ export default function Login() {
         email: provider === 'Google' ? 'google.student@inst.edu' : 'github.dev@inst.edu',
       });
       navigate('/dashboard');
-    } catch {
-      setError(`Failed to sign in with ${provider}.`);
+    } catch (err) {
+        console.error('Github Auth Error:', err)
+      setError(err?.message || `Failed to sign in with ${provider}.`);
     }
   };
 
@@ -41,8 +90,8 @@ export default function Login() {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600 text-white">
             <GraduationCap className="w-7 h-7" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">StudManager Portal</h1>
-          <p className="text-sm text-slate-500">Institutional Student & Academic Records System</p>
+          <h1 className="text-2xl font-bold text-slate-900">StudManager</h1>
+          <p className="text-sm text-slate-500">Student & Academic Records System</p>
         </div>
 
         {error && (
@@ -84,12 +133,45 @@ export default function Login() {
             </div>
           </div>
 
+          {isSettingPassword && (
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700">Confirm Password</label>
+              <div className="relative mt-1">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input 
+                id="confirmPassword"
+                type="password"
+                required placeholder="......"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full rounded-lg border border-slate-300 pl-9 pr-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+                />
+              </div>
+            </div>
+          )}
+
           <button
             type="submit"
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition cursor-pointer"
           >
-            Sign In with Email
-          </button>
+            {isSettingPassword ? 'Set Password & Sign In' : 'Sign In with Email'}
+            </button>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSettingPassword(!isSettingPassword)
+                  setError('')
+                  setConfirmPassword('')
+                }}
+                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+              >  
+                {isSettingPassword
+                  ? 'Already have a password? Sign In'
+                  : 'First-time student? Set your password'}
+                  </button>
+              </div>
         </form>
 
         <div className="relative flex items-center justify-center">
